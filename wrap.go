@@ -6,6 +6,9 @@ package errors
 
 import (
 	"errors"
+	"fmt"
+
+	"github.com/ogen-go/errors/internal"
 )
 
 // A Wrapper provides context around another error.
@@ -38,6 +41,25 @@ func (e noWrapper) FormatError(p Printer) (next error) {
 // Otherwise, Unwrap returns nil.
 func Unwrap(err error) error {
 	return errors.Unwrap(err)
+}
+
+// Wrap error with message and caller.
+func Wrap(err error, message string) error {
+	frame := Frame{}
+	if internal.EnableTrace {
+		frame = Caller(1)
+	}
+	return &wrapError{msg: message, err: err, frame: frame}
+}
+
+// Wrapf wraps error with formatted message and caller.
+func Wrapf(err error, format string, a ...interface{}) error {
+	frame := Frame{}
+	if internal.EnableTrace {
+		frame = Caller(1)
+	}
+	msg := fmt.Sprintf(format, a...)
+	return &wrapError{msg: msg, err: err, frame: frame}
 }
 
 // Is reports whether any error in err's chain matches target.

@@ -159,7 +159,7 @@ func TestErrorFormatter(t *testing.T) {
 		err: framed,
 		fmt: "%+v",
 		want: "something:" +
-			"\n    golang.org/x/errors_test.TestErrorFormatter" +
+			"\n    github.com/ogen-go/errors_test.TestErrorFormatter" +
 			"\n        .+/fmt_test.go:101" +
 			"\n    something more",
 		regexp: true,

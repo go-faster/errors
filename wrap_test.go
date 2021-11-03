@@ -14,10 +14,10 @@ import (
 
 func TestIs(t *testing.T) {
 	err1 := errors.New("1")
-	erra := errors.Errorf("wrap 2: %w", err1)
-	errb := errors.Errorf("wrap 3: %w", erra)
+	erra := errors.Wrap(err1, "wrap 2")
+	errb := errors.Wrap(erra, "wrap3")
 	erro := errors.Opaque(err1)
-	errco := errors.Errorf("opaque: %w", erro)
+	errco := errors.Wrap(erro, "opaque")
 	err3 := errors.New("3")
 
 	poser := &poser{"either 1 or 3", func(err error) bool {
@@ -100,7 +100,7 @@ func TestAs(t *testing.T) {
 		&errP,
 		false,
 	}, {
-		errors.Errorf("pittied the fool: %w", errorT{}),
+		errors.Wrap(errorT{}, "pittied the fool"),
 		&errT,
 		true,
 	}, {
@@ -140,7 +140,7 @@ func TestAs(t *testing.T) {
 		&timeout,
 		true,
 	}, {
-		errors.Errorf("path error: %w", errF),
+		errors.Wrap(errF, "path error"),
 		&timeout,
 		true,
 	}}
@@ -186,7 +186,7 @@ func TestAsValidation(t *testing.T) {
 
 func TestUnwrap(t *testing.T) {
 	err1 := errors.New("1")
-	erra := errors.Errorf("wrap 2: %w", err1)
+	erra := errors.Wrap(err1, "wrap 2")
 	erro := errors.Opaque(err1)
 
 	testCases := []struct {
@@ -197,10 +197,10 @@ func TestUnwrap(t *testing.T) {
 		{errWrap{nil}, nil},
 		{err1, nil},
 		{erra, err1},
-		{errors.Errorf("wrap 3: %w", erra), erra},
+		{errors.Wrap(erra, "wrap 3"), erra},
 
 		{erro, nil},
-		{errors.Errorf("opaque: %w", erro), erro},
+		{errors.Wrap(erro, "opaque"), erro},
 	}
 	for _, tc := range testCases {
 		if got := errors.Unwrap(tc.err); got != tc.want {
