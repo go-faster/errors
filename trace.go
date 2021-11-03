@@ -7,17 +7,17 @@ import (
 var isTrace int64
 
 const (
-	traceEnabled  int64 = 0
-	traceDisabled int64 = 1
+	traceEnabled  = 0
+	traceDisabled = 1
 )
 
 // SetTrace sets tracing flag that controls capturing caller frames.
 func SetTrace(trace bool) {
-	v := traceEnabled
-	if !trace {
-		v = traceDisabled
+	if trace {
+		atomic.StoreInt64(&isTrace, traceEnabled)
+	} else {
+		atomic.StoreInt64(&isTrace, traceDisabled)
 	}
-	atomic.StoreInt64(&isTrace, v)
 }
 
 // EnableTrace enables capturing caller frames.
