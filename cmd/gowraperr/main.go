@@ -35,7 +35,7 @@ func isGoFile(f os.FileInfo) bool {
 	return !f.IsDir() && !strings.HasPrefix(name, ".") && strings.HasSuffix(name, ".go")
 }
 
-func process(src []byte) ([]byte, error) {
+func process(src []byte) []byte {
 	result := new(bytes.Buffer)
 	s := bufio.NewScanner(bytes.NewReader(src))
 	var inImports bool
@@ -72,7 +72,7 @@ func process(src []byte) ([]byte, error) {
 			inImports = false
 		}
 	}
-	return result.Bytes(), nil
+	return result.Bytes()
 }
 
 func processFile(filename string) error {
@@ -80,10 +80,7 @@ func processFile(filename string) error {
 	if err != nil {
 		return err
 	}
-	res, err := process(src)
-	if err != nil {
-		return err
-	}
+	res := process(src)
 	if bytes.Equal(src, res) {
 		return nil
 	}
