@@ -47,12 +47,12 @@ func BenchmarkErrorf(b *testing.B) {
 				defer func() { internal.EnableTrace = true }()
 
 				for i := 0; i < b.N; i++ {
-					errors.Errorf(bc.format, bc.args...)
+					_ = errors.Errorf(bc.format, bc.args...)
 				}
 			})
 			b.Run("Core", func(b *testing.B) {
 				for i := 0; i < b.N; i++ {
-					fmt.Errorf(bc.format, bc.args...)
+					_ = fmt.Errorf(bc.format, bc.args...)
 				}
 			})
 		})

@@ -485,7 +485,7 @@ type adapted struct {
 	err error
 }
 
-func (e adapted) Error() string { return string(e.msg) }
+func (e adapted) Error() string { return e.msg }
 
 func (e adapted) Format(s fmt.State, verb rune) {
 	errors.FormatError(e, s, verb)
@@ -556,13 +556,13 @@ type panicValue struct{}
 func (panicValue) String() string { panic("panic") }
 
 var rePath = regexp.MustCompile(`( [^ ]*)errors.*test\.`)
-var reLine = regexp.MustCompile(":[0-9]*\n?$")
+var reLine = regexp.MustCompile(`:\d*\n?$`)
 
 func cleanPath(s string) string {
 	s = rePath.ReplaceAllString(s, "/path.")
 	s = reLine.ReplaceAllString(s, ":xxx")
-	s = strings.Replace(s, "\n   ", "", -1)
-	s = strings.Replace(s, " /", "/", -1)
+	s = strings.ReplaceAll(s, "\n   ", "")
+	s = strings.ReplaceAll(s, " /", "/")
 	return s
 }
 
@@ -581,7 +581,6 @@ func errToParts(err error) (a []string) {
 		a = append(a, cleanPath(p.str))
 	}
 	return a
-
 }
 
 type testPrinter struct {

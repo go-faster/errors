@@ -38,7 +38,7 @@ func FormatError(f Formatter, s fmt.State, verb rune) {
 	case 'v':
 		if s.Flag('#') {
 			if stringer, ok := err.(fmt.GoStringer); ok {
-				io.WriteString(&p.buf, stringer.GoString())
+				_, _ = io.WriteString(&p.buf, stringer.GoString())
 				goto exit
 			}
 			// proceed as if it were %v
@@ -64,7 +64,7 @@ func FormatError(f Formatter, s fmt.State, verb rune) {
 			p.buf.WriteString("<nil>")
 		}
 		p.buf.WriteByte(')')
-		io.Copy(s, &p.buf)
+		_, _ = io.Copy(s, &p.buf)
 		return
 	}
 
@@ -77,7 +77,7 @@ loop:
 			v.Format(p, 'v')
 			break loop
 		default:
-			io.WriteString(&p.buf, v.Error())
+			_, _ = p.buf.WriteString(v.Error())
 			break loop
 		}
 		if err == nil {
@@ -116,9 +116,9 @@ exit:
 			format = strconv.AppendInt(format, int64(prec), 10)
 		}
 		format = append(format, string(verb)...)
-		fmt.Fprintf(s, string(format), p.buf.String())
+		_, _ = fmt.Fprintf(s, string(format), p.buf.String())
 	} else {
-		io.Copy(s, &p.buf)
+		_, _ = io.Copy(s, &p.buf)
 	}
 }
 
@@ -177,13 +177,13 @@ type printer state
 
 func (s *printer) Print(args ...interface{}) {
 	if !s.inDetail || s.printDetail {
-		fmt.Fprint((*state)(s), args...)
+		_, _ = fmt.Fprint((*state)(s), args...)
 	}
 }
 
 func (s *printer) Printf(format string, args ...interface{}) {
 	if !s.inDetail || s.printDetail {
-		fmt.Fprintf((*state)(s), format, args...)
+		_, _ = fmt.Fprintf((*state)(s), format, args...)
 	}
 }
 

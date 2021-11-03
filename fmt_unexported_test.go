@@ -45,7 +45,6 @@ func TestParsePercentW(t *testing.T) {
 		if gotIdx != test.wantIdx || gotFormat != test.wantFormat || gotOK != test.wantOK {
 			t.Errorf("parsePercentW(%q) = (%d, %q, %t), want (%d, %q, %t)",
 				test.in, gotIdx, gotFormat, gotOK, test.wantIdx, test.wantFormat, test.wantOK)
-
 		}
 	}
 }
