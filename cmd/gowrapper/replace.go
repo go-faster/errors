@@ -18,7 +18,7 @@ func replace(input string) string {
 		end := strings.Index(input[start:], endMarker)
 		if end > 0 {
 			toReplace := input[start : start+end+len(endMarker)]
-			target := fmt.Sprintf(`errors.Wrap(err, "%s")`, input[start+len(marker):start+end])
+			target := fmt.Sprintf(`errors.Wrap(err, %q)`, input[start+len(marker):start+end])
 			input = strings.ReplaceAll(input, toReplace, target)
 		} else {
 			input = strings.ReplaceAll(input, "xerrors.Errorf", "errors.Errorf")

@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"go/scanner"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -67,7 +66,7 @@ func process(src []byte) []byte {
 		}
 
 		result.WriteString(line)
-		result.WriteRune('\n')
+		result.WriteByte('\n')
 
 		if strings.HasPrefix(line, "import") && !strings.Contains(line, "(") {
 			// Was single line import.
@@ -78,7 +77,7 @@ func process(src []byte) []byte {
 }
 
 func processFile(filename string) error {
-	src, err := os.ReadFile(filename)
+	src, err := os.ReadFile(filename) // #nosec: G304 // expected file via var
 	if err != nil {
 		return errors.Wrap(err, "read")
 	}
@@ -92,7 +91,7 @@ func processFile(filename string) error {
 	if fi, err := os.Stat(filename); err == nil {
 		perms = fi.Mode() & os.ModePerm
 	}
-	if err := ioutil.WriteFile(filename, res, perms); err != nil {
+	if err := os.WriteFile(filename, res, perms); err != nil {
 		return errors.Wrap(err, "write")
 	}
 

@@ -38,7 +38,7 @@ func FormatError(f Formatter, s fmt.State, verb rune) {
 	case 'v':
 		if s.Flag('#') {
 			if stringer, ok := err.(fmt.GoStringer); ok {
-				_, _ = io.WriteString(&p.buf, stringer.GoString())
+				p.buf.WriteString(stringer.GoString())
 				goto exit
 			}
 			// proceed as if it were %v
