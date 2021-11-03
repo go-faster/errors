@@ -14,6 +14,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/ogen-go/errors"
 )
 
 var exitCode = 0
@@ -78,7 +80,7 @@ func process(src []byte) []byte {
 func processFile(filename string) error {
 	src, err := os.ReadFile(filename)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "read")
 	}
 	res := process(src)
 	if bytes.Equal(src, res) {
@@ -91,8 +93,9 @@ func processFile(filename string) error {
 		perms = fi.Mode() & os.ModePerm
 	}
 	if err := ioutil.WriteFile(filename, res, perms); err != nil {
-		return err
+		return errors.Wrap(err, "write")
 	}
+
 	return nil
 }
 
