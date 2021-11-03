@@ -8,82 +8,12 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path"
-	"reflect"
 	"regexp"
-	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/ogen-go/errors"
 )
-
-func TestErrorf(t *testing.T) {
-	chained := &wrapped{"chained", nil}
-	chain := func(s ...string) (a []string) {
-		for _, s := range s {
-			a = append(a, cleanPath(s))
-		}
-		return a
-	}
-	testCases := []struct {
-		got  error
-		want []string
-	}{{
-		errors.Errorf("no args"),
-		chain("no args/path.TestErrorf/path.go:xxx"),
-	}, {
-		errors.Errorf("no args: %s"),
-		chain("no args: %!s(MISSING)/path.TestErrorf/path.go:xxx"),
-	}, {
-		errors.Errorf("nounwrap: %s", "simple"),
-		chain(`nounwrap: simple/path.TestErrorf/path.go:xxx`),
-	}, {
-		errors.Errorf("nounwrap: %v", "simple"),
-		chain(`nounwrap: simple/path.TestErrorf/path.go:xxx`),
-	}, {
-		errors.Errorf("%s failed: %v", "foo", chained),
-		chain("foo failed/path.TestErrorf/path.go:xxx",
-			"chained/somefile.go:xxx"),
-	}, {
-		errors.Errorf("no wrap: %s", chained),
-		chain("no wrap/path.TestErrorf/path.go:xxx",
-			"chained/somefile.go:xxx"),
-	}, {
-		errors.Errorf("%s failed: %w", "foo", chained),
-		chain("wraps:foo failed/path.TestErrorf/path.go:xxx",
-			"chained/somefile.go:xxx"),
-	}, {
-		errors.Errorf("nowrapv: %v", chained),
-		chain("nowrapv/path.TestErrorf/path.go:xxx",
-			"chained/somefile.go:xxx"),
-	}, {
-		errors.Errorf("wrapw: %w", chained),
-		chain("wraps:wrapw/path.TestErrorf/path.go:xxx",
-			"chained/somefile.go:xxx"),
-	}, {
-		errors.Errorf("wrapw %w middle", chained),
-		chain("wraps:wrapw chained middle/path.TestErrorf/path.go:xxx",
-			"chained/somefile.go:xxx"),
-	}, {
-		errors.Errorf("not wrapped: %+v", chained),
-		chain("not wrapped: chained: somefile.go:123/path.TestErrorf/path.go:xxx"),
-	}}
-	for i, tc := range testCases {
-		t.Run(strconv.Itoa(i)+"/"+path.Join(tc.want...), func(t *testing.T) {
-			got := errToParts(tc.got)
-			if !reflect.DeepEqual(got, tc.want) {
-				t.Errorf("Format:\n got: %#v\nwant: %#v", got, tc.want)
-			}
-
-			gotStr := tc.got.Error()
-			wantStr := fmt.Sprint(tc.got)
-			if gotStr != wantStr {
-				t.Errorf("Error:\n got: %#v\nwant: %#v", got, tc.want)
-			}
-		})
-	}
-}
 
 func TestErrorFormatter(t *testing.T) {
 	var (
@@ -160,7 +90,7 @@ func TestErrorFormatter(t *testing.T) {
 		fmt: "%+v",
 		want: "something:" +
 			"\n    github.com/ogen-go/errors_test.TestErrorFormatter" +
-			"\n        .+/fmt_test.go:101" +
+			"\n        .+/format_test.go:31" +
 			"\n    something more",
 		regexp: true,
 	}, {

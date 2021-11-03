@@ -210,13 +210,13 @@ func TestUnwrap(t *testing.T) {
 }
 
 func TestOpaque(t *testing.T) {
-	got := fmt.Sprintf("%v", errors.Errorf("foo: %v", errors.Opaque(errorT{})))
+	got := fmt.Sprintf("%v", errors.Wrap(errors.Opaque(errorT{}), "foo"))
 	want := "foo: errorT"
 	if got != want {
 		t.Errorf("error without Format: got %v; want %v", got, want)
 	}
 
-	got = fmt.Sprintf("%v", errors.Errorf("foo: %v", errors.Opaque(errorD{})))
+	got = fmt.Sprintf("%v", errors.Wrap(errors.Opaque(errorD{}), "foo"))
 	want = "foo: errorD"
 	if got != want {
 		t.Errorf("error with Format: got %v; want %v", got, want)

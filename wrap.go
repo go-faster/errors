@@ -43,6 +43,28 @@ func Unwrap(err error) error {
 	return errors.Unwrap(err)
 }
 
+type wrapError struct {
+	msg   string
+	err   error
+	frame Frame
+}
+
+func (e *wrapError) Error() string {
+	return fmt.Sprint(e)
+}
+
+func (e *wrapError) Format(s fmt.State, v rune) { FormatError(e, s, v) }
+
+func (e *wrapError) FormatError(p Printer) (next error) {
+	p.Print(e.msg)
+	e.frame.Format(p)
+	return e.err
+}
+
+func (e *wrapError) Unwrap() error {
+	return e.err
+}
+
 // Wrap error with message and caller.
 func Wrap(err error, message string) error {
 	frame := Frame{}
