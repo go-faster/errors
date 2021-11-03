@@ -4,19 +4,19 @@ import (
 	"sync/atomic"
 )
 
-var isTrace int64
+var traceFlag int64
 
 const (
-	traceEnabled  = 0
+	traceEnabled  = 0 // enabled by default
 	traceDisabled = 1
 )
 
 // SetTrace sets tracing flag that controls capturing caller frames.
 func SetTrace(trace bool) {
 	if trace {
-		atomic.StoreInt64(&isTrace, traceEnabled)
+		atomic.StoreInt64(&traceFlag, traceEnabled)
 	} else {
-		atomic.StoreInt64(&isTrace, traceDisabled)
+		atomic.StoreInt64(&traceFlag, traceDisabled)
 	}
 }
 
@@ -28,5 +28,5 @@ func DisableTrace() { SetTrace(false) }
 
 // Trace reports whether caller stack capture is enabled.
 func Trace() bool {
-	return atomic.LoadInt64(&isTrace) == traceEnabled
+	return atomic.LoadInt64(&traceFlag) == traceEnabled
 }
