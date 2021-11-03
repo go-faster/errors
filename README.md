@@ -20,5 +20,5 @@ if err != nil {
 * The [cockroachdb/errors](https://github.com/cockroachdb/errors) is too big
 * The `errors` has no caller stack trace
 
-# Don't need traces
+# Don't need traces?
 Call `errors.DisableTrace` or use build flag `noerrtrace`.
