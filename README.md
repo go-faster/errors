@@ -2,6 +2,9 @@
 
 Fork of [xerrrors](https://pkg.go.dev/golang.org/x/xerrors) with `Wrap` and `Wrapf` instead of `%w` parsing.
 
+> Clear is better than clever.
+> Reflection is never clear.
+
 ```
 go get github.com/ogen-go/errors
 ```
