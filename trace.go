@@ -7,8 +7,8 @@ import (
 var isTrace int64
 
 const (
-	traceEnabled  int64 = 1
-	traceDisabled int64 = 0
+	traceEnabled  int64 = 0
+	traceDisabled int64 = 1
 )
 
 // SetTrace sets tracing flag that controls capturing caller frames.
