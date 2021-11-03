@@ -25,6 +25,12 @@ if err != nil {
 ## Don't need traces?
 Call `errors.DisableTrace` or use build tag `noerrtrace`.
 
+## Migration
+```
+go get github.com/ogen-go/errors/cmd/gowrapper@latest
+gowrapper ./...
+```
+
 ## License
 
 BSD-3-Clause, same as Go sources

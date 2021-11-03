@@ -25,7 +25,7 @@ func report(err error) {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: gowraperr [flags] [path ...]\n")
+	fmt.Fprintf(os.Stderr, "usage: gowrapper [path ...]\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -114,7 +114,13 @@ func walkDir(path string) {
 
 func main() {
 	flag.Usage = usage
-	for _, path := range parseFlags() {
+	flag.Parse()
+	args := flag.Args()
+	if len(args) == 0 {
+		report(errors.New("error: no path list provided"))
+		usage()
+	}
+	for _, path := range args {
 		switch dir, err := os.Stat(path); {
 		case err != nil:
 			report(err)
@@ -127,11 +133,4 @@ func main() {
 		}
 	}
 	os.Exit(exitCode)
-}
-
-// parseFlags parses command line flags and returns the paths to process.
-// It's a var so that custom implementations can replace it in other files.
-var parseFlags = func() []string {
-	flag.Parse()
-	return flag.Args()
 }
