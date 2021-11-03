@@ -244,7 +244,9 @@ func (errWrap) Error() string { return "wrapped" }
 
 func (errWrap) Unwrap() error { return nil }
 
-type errorUncomparable struct{}
+type errorUncomparable struct {
+	_ interface{} // forbid compare
+}
 
 func (errorUncomparable) Error() string {
 	return "uncomparable error"
