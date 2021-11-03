@@ -2,17 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package errors_test
+package errors
 
 import (
 	"fmt"
 	"testing"
-
-	"github.com/ogen-go/errors"
 )
 
 func BenchmarkWrap(b *testing.B) {
-	err := errors.New("foo")
+	err := New("foo")
 	args := func(a ...interface{}) []interface{} { return a }
 	benchCases := []struct {
 		name   string
@@ -28,16 +26,16 @@ func BenchmarkWrap(b *testing.B) {
 			b.Run("WrapTrace", func(b *testing.B) {
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
-					_ = errors.Wrap(bc.err, bc.msg)
+					_ = Wrap(bc.err, bc.msg)
 				}
 			})
 			b.Run("WrapNoTrace", func(b *testing.B) {
 				b.ReportAllocs()
-				errors.DisableTrace()
-				defer errors.EnableTrace()
+				DisableTrace()
+				defer enableTrace()
 
 				for i := 0; i < b.N; i++ {
-					_ = errors.Wrap(bc.err, bc.msg)
+					_ = Wrap(bc.err, bc.msg)
 				}
 			})
 			b.Run("Core", func(b *testing.B) {

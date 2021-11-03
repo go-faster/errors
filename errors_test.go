@@ -36,6 +36,9 @@ func TestErrorMethod(t *testing.T) {
 }
 
 func TestNewDetail(t *testing.T) {
+	if !errors.Trace() {
+		t.Skip("No trace")
+	}
 	got := fmt.Sprintf("%+v", errors.New("error"))
 	want := `(?s)error:.+errors_test.go:\d+`
 	ok, err := regexp.MatchString(want, got)

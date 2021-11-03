@@ -1,3 +1,5 @@
+//go:build !noerrtrace
+
 package errors
 
 import (
@@ -11,8 +13,8 @@ const (
 	traceDisabled = 1
 )
 
-// SetTrace sets tracing flag that controls capturing caller frames.
-func SetTrace(trace bool) {
+// setTrace sets tracing flag that controls capturing caller frames.
+func setTrace(trace bool) {
 	if trace {
 		atomic.StoreInt64(&traceFlag, traceEnabled)
 	} else {
@@ -20,11 +22,13 @@ func SetTrace(trace bool) {
 	}
 }
 
-// EnableTrace enables capturing caller frames.
-func EnableTrace() { SetTrace(true) }
+// enableTrace enables capturing caller frames.
+//
+// Intentionally left unexported.
+func enableTrace() { setTrace(true) }
 
 // DisableTrace disables capturing caller frames.
-func DisableTrace() { SetTrace(false) }
+func DisableTrace() { setTrace(false) }
 
 // Trace reports whether caller stack capture is enabled.
 func Trace() bool {
