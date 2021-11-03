@@ -89,7 +89,7 @@ func TestErrorFormatter(t *testing.T) {
 		fmt: "%+v",
 		want: "something:" +
 			"\n    github.com/ogen-go/errors_test.TestErrorFormatter" +
-			"\n        .+/format_test.go:31" +
+			"\n        .+/format_test.go:30" +
 			"\n    something more",
 		regexp: true,
 	}, {
