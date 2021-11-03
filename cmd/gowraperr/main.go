@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-import _ "net/url"
-
 var exitCode = 0
 
 func report(err error) {
