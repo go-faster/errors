@@ -21,4 +21,4 @@ if err != nil {
 * The `errors` has no caller stack trace
 
 ## Don't need traces?
-Call `errors.DisableTrace` or use build flag `noerrtrace`.
+Call `errors.DisableTrace` or use build tag `noerrtrace`.
