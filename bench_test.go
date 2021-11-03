@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/ogen-go/errors"
-	"github.com/ogen-go/errors/internal"
 )
 
 func BenchmarkWrap(b *testing.B) {
@@ -34,8 +33,8 @@ func BenchmarkWrap(b *testing.B) {
 			})
 			b.Run("WrapNoTrace", func(b *testing.B) {
 				b.ReportAllocs()
-				internal.EnableTrace = false
-				defer func() { internal.EnableTrace = true }()
+				errors.DisableTrace()
+				defer errors.EnableTrace()
 
 				for i := 0; i < b.N; i++ {
 					_ = errors.Wrap(bc.err, bc.msg)

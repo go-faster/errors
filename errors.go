@@ -17,6 +17,9 @@ type errorString struct {
 // The returned error contains a Frame set to the caller's location and
 // implements Formatter to show this information when printed with details.
 func New(text string) error {
+	if !Trace() {
+		return &errorString{s: text}
+	}
 	return &errorString{text, Caller(1)}
 }
 
