@@ -9,7 +9,6 @@ import (
 	"io"
 	"os"
 	"regexp"
-	"strings"
 	"testing"
 
 	"github.com/ogen-go/errors"
@@ -484,48 +483,3 @@ func (e fmtTwiceErr) GoString() string {
 type panicValue struct{}
 
 func (panicValue) String() string { panic("panic") }
-
-var rePath = regexp.MustCompile(`( [^ ]*)errors.*test\.`)
-var reLine = regexp.MustCompile(`:\d*\n?$`)
-
-func cleanPath(s string) string {
-	s = rePath.ReplaceAllString(s, "/path.")
-	s = reLine.ReplaceAllString(s, ":xxx")
-	s = strings.ReplaceAll(s, "\n   ", "")
-	s = strings.ReplaceAll(s, " /", "/")
-	return s
-}
-
-func errToParts(err error) (a []string) {
-	for err != nil {
-		var p testPrinter
-		if errors.Unwrap(err) != nil {
-			p.str += "wraps:"
-		}
-		f, ok := err.(errors.Formatter)
-		if !ok {
-			a = append(a, err.Error())
-			break
-		}
-		err = f.FormatError(&p)
-		a = append(a, cleanPath(p.str))
-	}
-	return a
-}
-
-type testPrinter struct {
-	str string
-}
-
-func (p *testPrinter) Print(a ...interface{}) {
-	p.str += fmt.Sprint(a...)
-}
-
-func (p *testPrinter) Printf(format string, a ...interface{}) {
-	p.str += fmt.Sprintf(format, a...)
-}
-
-func (p *testPrinter) Detail() bool {
-	p.str += " /"
-	return true
-}
