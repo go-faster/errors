@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package xerrors
+package errors
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"golang.org/x/xerrors/internal"
+	"github.com/ogen-go/errors/internal"
 )
 
 const percentBangString = "%!"

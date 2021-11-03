@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package xerrors_test
+package errors_test
 
 import (
 	"fmt"
 
-	"golang.org/x/xerrors"
+	"github.com/ogen-go/errors"
 )
 
 type MyError2 struct {
 	Message string
-	frame   xerrors.Frame
+	frame   errors.Frame
 }
 
 func (m *MyError2) Error() string {
@@ -20,10 +20,10 @@ func (m *MyError2) Error() string {
 }
 
 func (m *MyError2) Format(f fmt.State, c rune) { // implements fmt.Formatter
-	xerrors.FormatError(m, f, c)
+	errors.FormatError(m, f, c)
 }
 
-func (m *MyError2) FormatError(p xerrors.Printer) error { // implements xerrors.Formatter
+func (m *MyError2) FormatError(p errors.Printer) error { // implements errors.Formatter
 	p.Print(m.Message)
 	if p.Detail() {
 		m.frame.Format(p)
@@ -32,7 +32,7 @@ func (m *MyError2) FormatError(p xerrors.Printer) error { // implements xerrors.
 }
 
 func ExampleFormatError() {
-	err := &MyError2{Message: "oops", frame: xerrors.Caller(1)}
+	err := &MyError2{Message: "oops", frame: errors.Caller(1)}
 	fmt.Printf("%v\n", err)
 	fmt.Println()
 	fmt.Printf("%+v\n", err)

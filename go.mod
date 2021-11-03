@@ -1,3 +1,3 @@
-module golang.org/x/xerrors
+module github.com/ogen-go/errors
 
-go 1.11
+go 1.17

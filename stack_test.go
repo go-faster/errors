@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package xerrors_test
+package errors_test
 
 import (
 	"bytes"
@@ -10,8 +10,8 @@ import (
 	"math/big"
 	"testing"
 
-	"golang.org/x/xerrors"
-	"golang.org/x/xerrors/internal"
+	"github.com/ogen-go/errors"
+	"github.com/ogen-go/errors/internal"
 )
 
 type myType struct{}
@@ -21,7 +21,7 @@ func (myType) Format(s fmt.State, v rune) {
 }
 
 func BenchmarkErrorf(b *testing.B) {
-	err := xerrors.New("foo")
+	err := errors.New("foo")
 	// pi := big.NewFloat(3.14) // Something expensive.
 	num := big.NewInt(5)
 	args := func(a ...interface{}) []interface{} { return a }
@@ -39,7 +39,7 @@ func BenchmarkErrorf(b *testing.B) {
 		b.Run(bc.name, func(b *testing.B) {
 			b.Run("ExpWithTrace", func(b *testing.B) {
 				for i := 0; i < b.N; i++ {
-					xerrors.Errorf(bc.format, bc.args...)
+					errors.Errorf(bc.format, bc.args...)
 				}
 			})
 			b.Run("ExpNoTrace", func(b *testing.B) {
@@ -47,7 +47,7 @@ func BenchmarkErrorf(b *testing.B) {
 				defer func() { internal.EnableTrace = true }()
 
 				for i := 0; i < b.N; i++ {
-					xerrors.Errorf(bc.format, bc.args...)
+					errors.Errorf(bc.format, bc.args...)
 				}
 			})
 			b.Run("Core", func(b *testing.B) {

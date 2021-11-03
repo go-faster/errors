@@ -2,23 +2,23 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package xerrors_test
+package errors_test
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
-	"golang.org/x/xerrors"
+	"github.com/ogen-go/errors"
 )
 
 func TestIs(t *testing.T) {
-	err1 := xerrors.New("1")
-	erra := xerrors.Errorf("wrap 2: %w", err1)
-	errb := xerrors.Errorf("wrap 3: %w", erra)
-	erro := xerrors.Opaque(err1)
-	errco := xerrors.Errorf("opaque: %w", erro)
-	err3 := xerrors.New("3")
+	err1 := errors.New("1")
+	erra := errors.Errorf("wrap 2: %w", err1)
+	errb := errors.Errorf("wrap 3: %w", erra)
+	erro := errors.Opaque(err1)
+	errco := errors.Errorf("opaque: %w", erro)
+	err3 := errors.New("3")
 
 	poser := &poser{"either 1 or 3", func(err error) bool {
 		return err == err1 || err == err3
@@ -56,7 +56,7 @@ func TestIs(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run("", func(t *testing.T) {
-			if got := xerrors.Is(tc.err, tc.target); got != tc.match {
+			if got := errors.Is(tc.err, tc.target); got != tc.match {
 				t.Errorf("Is(%v, %v) = %v, want %v", tc.err, tc.target, got, tc.match)
 			}
 		})
@@ -100,7 +100,7 @@ func TestAs(t *testing.T) {
 		&errP,
 		false,
 	}, {
-		xerrors.Errorf("pittied the fool: %w", errorT{}),
+		errors.Errorf("pittied the fool: %w", errorT{}),
 		&errT,
 		true,
 	}, {
@@ -108,7 +108,7 @@ func TestAs(t *testing.T) {
 		&errP,
 		true,
 	}, {
-		xerrors.Opaque(errT),
+		errors.Opaque(errT),
 		&errT,
 		false,
 	}, {
@@ -132,7 +132,7 @@ func TestAs(t *testing.T) {
 		&p,
 		true,
 	}, {
-		xerrors.New("err"),
+		errors.New("err"),
 		&timeout,
 		false,
 	}, {
@@ -140,16 +140,16 @@ func TestAs(t *testing.T) {
 		&timeout,
 		true,
 	}, {
-		xerrors.Errorf("path error: %w", errF),
+		errors.Errorf("path error: %w", errF),
 		&timeout,
 		true,
 	}}
 	for i, tc := range testCases {
 		name := fmt.Sprintf("%d:As(Errorf(..., %v), %v)", i, tc.err, tc.target)
 		t.Run(name, func(t *testing.T) {
-			match := xerrors.As(tc.err, tc.target)
+			match := errors.As(tc.err, tc.target)
 			if match != tc.match {
-				t.Fatalf("xerrors.As(%T, %T): got %v; want %v", tc.err, tc.target, match, tc.match)
+				t.Fatalf("errors.As(%T, %T): got %v; want %v", tc.err, tc.target, match, tc.match)
 			}
 			if !match {
 				return
@@ -169,13 +169,13 @@ func TestAsValidation(t *testing.T) {
 		"error",
 		&s,
 	}
-	err := xerrors.New("error")
+	err := errors.New("error")
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%T(%v)", tc, tc), func(t *testing.T) {
 			defer func() {
 				recover()
 			}()
-			if xerrors.As(err, tc) {
+			if errors.As(err, tc) {
 				t.Errorf("As(err, %T(%v)) = true, want false", tc, tc)
 				return
 			}
@@ -185,9 +185,9 @@ func TestAsValidation(t *testing.T) {
 }
 
 func TestUnwrap(t *testing.T) {
-	err1 := xerrors.New("1")
-	erra := xerrors.Errorf("wrap 2: %w", err1)
-	erro := xerrors.Opaque(err1)
+	err1 := errors.New("1")
+	erra := errors.Errorf("wrap 2: %w", err1)
+	erro := errors.Opaque(err1)
 
 	testCases := []struct {
 		err  error
@@ -197,26 +197,26 @@ func TestUnwrap(t *testing.T) {
 		{errWrap{nil}, nil},
 		{err1, nil},
 		{erra, err1},
-		{xerrors.Errorf("wrap 3: %w", erra), erra},
+		{errors.Errorf("wrap 3: %w", erra), erra},
 
 		{erro, nil},
-		{xerrors.Errorf("opaque: %w", erro), erro},
+		{errors.Errorf("opaque: %w", erro), erro},
 	}
 	for _, tc := range testCases {
-		if got := xerrors.Unwrap(tc.err); got != tc.want {
+		if got := errors.Unwrap(tc.err); got != tc.want {
 			t.Errorf("Unwrap(%v) = %v, want %v", tc.err, got, tc.want)
 		}
 	}
 }
 
 func TestOpaque(t *testing.T) {
-	got := fmt.Sprintf("%v", xerrors.Errorf("foo: %v", xerrors.Opaque(errorT{})))
+	got := fmt.Sprintf("%v", errors.Errorf("foo: %v", errors.Opaque(errorT{})))
 	want := "foo: errorT"
 	if got != want {
 		t.Errorf("error without Format: got %v; want %v", got, want)
 	}
 
-	got = fmt.Sprintf("%v", xerrors.Errorf("foo: %v", xerrors.Opaque(errorD{})))
+	got = fmt.Sprintf("%v", errors.Errorf("foo: %v", errors.Opaque(errorD{})))
 	want = "foo: errorD"
 	if got != want {
 		t.Errorf("error with Format: got %v; want %v", got, want)
@@ -231,7 +231,7 @@ type errorD struct{}
 
 func (errorD) Error() string { return "errorD" }
 
-func (errorD) FormatError(p xerrors.Printer) error {
+func (errorD) FormatError(p errors.Printer) error {
 	p.Print("errorD")
 	p.Detail()
 	p.Print("detail")
