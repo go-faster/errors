@@ -13,7 +13,7 @@ if err != nil {
 ```
 
 ## Why
-* Using `Wrap` is the most explicit way to do error wrapping
+* Using `Wrap` is the most explicit way to wrap errors
 * Wrapping with `fmt.Errorf("foo: %w", err)` is implicit, redundant and error-prone
 * Parsing `"foo: %w"` is implicit, redundant and slow
 * The [pkg/errors](https://github.com/pkg/errors) and [xerrrors](https://pkg.go.dev/golang.org/x/xerrors) are not maintainted
