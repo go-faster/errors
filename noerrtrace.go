@@ -9,4 +9,4 @@ func enableTrace() {}
 func DisableTrace() {}
 
 // Trace always returns false.
-func Trace() bool { return false}
+func Trace() bool { return false }
