@@ -4,7 +4,10 @@
 
 package errors
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // errorString is a trivial implementation of error.
 type errorString struct {
@@ -18,14 +21,12 @@ type errorString struct {
 // implements Formatter to show this information when printed with details.
 func New(text string) error {
 	if !Trace() {
-		return &errorString{s: text}
+		return errors.New(text)
 	}
 	return &errorString{text, Caller(1)}
 }
 
-func (e *errorString) Error() string {
-	return e.s
-}
+func (e *errorString) Error() string { return e.s }
 
 func (e *errorString) Format(s fmt.State, v rune) { FormatError(e, s, v) }
 
