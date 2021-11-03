@@ -1,4 +1,4 @@
-# errors
+# errors [![Go Reference](https://img.shields.io/badge/go-pkg-00ADD8)](https://pkg.go.dev/github.com/ogen-go/errors#section-documentation) [![codecov](https://img.shields.io/codecov/c/github/ogen-go/errors?label=cover)](https://codecov.io/gh/ogen-go/errors)
 
 Fork of [xerrrors](https://pkg.go.dev/golang.org/x/xerrors) with `Wrap` and `Wrapf` instead of `%w` parsing.
 
