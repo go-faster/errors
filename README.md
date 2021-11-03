@@ -24,3 +24,7 @@ if err != nil {
 
 ## Don't need traces?
 Call `errors.DisableTrace` or use build tag `noerrtrace`.
+
+## License
+
+BSD-3-Clause, same as Go sources
