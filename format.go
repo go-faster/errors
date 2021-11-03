@@ -4,6 +4,10 @@
 
 package errors
 
+import (
+	"fmt"
+)
+
 // A Formatter formats error messages.
 type Formatter interface {
 	error
@@ -31,4 +35,12 @@ type Printer interface {
 	// detail has not been requested.
 	// If Detail returns false, the caller can avoid printing the detail at all.
 	Detail() bool
+}
+
+// Errorf creates new error with format.
+func Errorf(format string, a ...interface{}) error {
+	if !Trace() {
+		return fmt.Errorf(format, a...)
+	}
+	return &errorString{fmt.Sprintf(format, a...), Caller(1)}
 }
