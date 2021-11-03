@@ -18,3 +18,4 @@ if err != nil {
 * Parsing of `"foo: %w"` is slow, implicit and redundant
 * The [pkg/errors](https://github.com/pkg/errors) and [xerrrors](https://pkg.go.dev/golang.org/x/xerrors) are not maintainted
 * The [cockroachdb/errors](https://github.com/cockroachdb/errors) is too big
+* The `errors` has no caller stack trace
