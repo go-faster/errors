@@ -1,4 +1,5 @@
 //go:build !noerrtrace
+// +build !noerrtrace
 
 package errors
 
