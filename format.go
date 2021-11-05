@@ -6,6 +6,7 @@ package errors
 
 import (
 	"fmt"
+	"strings"
 )
 
 // A Formatter formats error messages.
@@ -39,7 +40,7 @@ type Printer interface {
 
 // Errorf creates new error with format.
 func Errorf(format string, a ...interface{}) error {
-	if !Trace() {
+	if !Trace() || strings.Contains(format, "%w") {
 		return fmt.Errorf(format, a...)
 	}
 	return &errorString{fmt.Sprintf(format, a...), Caller(1)}

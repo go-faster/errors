@@ -483,3 +483,9 @@ func (e fmtTwiceErr) GoString() string {
 type panicValue struct{}
 
 func (panicValue) String() string { panic("panic") }
+
+func TestFormatError(t *testing.T) {
+	if !errors.Is(errors.Errorf("foo: %w", io.EOF), io.EOF) {
+		t.Error("fallback expected")
+	}
+}
