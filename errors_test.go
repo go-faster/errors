@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/ogen-go/errors"
+	"github.com/go-faster/errors"
 )
 
 func TestNewEqual(t *testing.T) {

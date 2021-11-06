@@ -14,7 +14,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ogen-go/errors"
+	"github.com/go-faster/errors"
 )
 
 var exitCode = 0
@@ -41,7 +41,7 @@ func process(src []byte) []byte {
 	s := bufio.NewScanner(bytes.NewReader(src))
 	var inImports bool
 
-	const target = `"github.com/ogen-go/errors"`
+	const target = `"github.com/go-faster/errors"`
 	replacer := strings.NewReplacer(
 		`"github.com/pkg/errors"`, target,
 		`"golang.org/x/xerrors"`, target,

@@ -1,3 +1,3 @@
-module github.com/ogen-go/errors
+module github.com/go-faster/errors
 
 go 1.17

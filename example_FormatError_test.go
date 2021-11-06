@@ -7,7 +7,7 @@ package errors_test
 import (
 	"fmt"
 
-	"github.com/ogen-go/errors"
+	"github.com/go-faster/errors"
 )
 
 type MyError2 struct {

@@ -9,7 +9,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ogen-go/errors"
+	"github.com/go-faster/errors"
 )
 
 func TestIs(t *testing.T) {

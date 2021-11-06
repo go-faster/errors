@@ -11,7 +11,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/ogen-go/errors"
+	"github.com/go-faster/errors"
 )
 
 func TestErrorFormatter(t *testing.T) {
@@ -88,7 +88,7 @@ func TestErrorFormatter(t *testing.T) {
 		err: framed,
 		fmt: "%+v",
 		want: "something:" +
-			"\n    github.com/ogen-go/errors_test.TestErrorFormatter" +
+			"\n    github.com/go-faster/errors_test.TestErrorFormatter" +
 			"\n        .+/format_test.go:30" +
 			"\n    something more",
 		regexp: true,

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ogen-go/errors"
+	"github.com/go-faster/errors"
 )
 
 func ExampleAs() {
