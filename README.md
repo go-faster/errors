@@ -9,9 +9,7 @@ go get github.com/go-faster/errors
 ```
 
 ```go
-if err != nil {
-	return errors.Wrap(err, "something went wrong")
-}
+errors.Wrap(err, "message")
 ```
 
 ## Why
