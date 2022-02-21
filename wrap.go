@@ -41,6 +41,20 @@ func Unwrap(err error) error {
 	return errors.Unwrap(err)
 }
 
+// Cause returns first recorded Frame.
+func Cause(err error) (f Frame, r bool) {
+	for {
+		we, ok := err.(*wrapError)
+		if !ok {
+			return f, r
+		}
+		f = we.frame
+		r = r || ok
+
+		err = we.err
+	}
+}
+
 type wrapError struct {
 	msg   string
 	err   error

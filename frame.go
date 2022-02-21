@@ -25,10 +25,10 @@ func Caller(skip int) Frame {
 	return s
 }
 
-// location reports the file, line, and function of a frame.
+// Location reports the file, line, and function of a frame.
 //
 // The returned function may be "" even if file and line are not.
-func (f Frame) location() (function, file string, line int) {
+func (f Frame) Location() (function, file string, line int) {
 	frames := runtime.CallersFrames(f.frames[:])
 	if _, ok := frames.Next(); !ok {
 		return "", "", 0
@@ -45,7 +45,7 @@ func (f Frame) location() (function, file string, line int) {
 // after printing any other error detail.
 func (f Frame) Format(p Printer) {
 	if p.Detail() {
-		function, file, line := f.location()
+		function, file, line := f.Location()
 		if function != "" {
 			p.Printf("%s\n    ", function)
 		}
