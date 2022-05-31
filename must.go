@@ -1,3 +1,5 @@
+//go:build go1.18
+
 package errors
 
 // Must is a generic helper, like template.Must, that wraps a call to a function returning (T, error)
