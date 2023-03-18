@@ -88,12 +88,8 @@ func Wrap(err error, message string) error {
 
 // Wrapf wraps error with formatted message and caller.
 func Wrapf(err error, format string, a ...interface{}) error {
-	frame := Frame{}
-	if Trace() {
-		frame = Caller(1)
-	}
 	msg := fmt.Sprintf(format, a...)
-	return &wrapError{msg: msg, err: err, frame: frame}
+	return Wrap(err, msg)
 }
 
 // Is reports whether any error in err's chain matches target.
@@ -111,9 +107,7 @@ func Wrapf(err error, format string, a ...interface{}) error {
 //
 // then Is(MyError{}, fs.ErrExist) returns true. See syscall.Errno.Is for
 // an example in the standard library.
-func Is(err, target error) bool {
-	return errors.Is(err, target)
-}
+func Is(err, target error) bool { return errors.Is(err, target) }
 
 // As finds the first error in err's chain that matches target, and if so, sets
 // target to that error value and returns true. Otherwise, it returns false.
@@ -131,4 +125,4 @@ func Is(err, target error) bool {
 //
 // As panics if target is not a non-nil pointer to either a type that implements
 // error, or to any interface type.
-func As(err error, target interface{}) bool { return errors.As(err, target) }
+func As(err error, target any) bool { return errors.As(err, target) }
