@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Binary gowrapper replaces exisiting xerrors calls with errors analog.
 package main
 
 import (
