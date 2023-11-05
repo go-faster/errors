@@ -16,7 +16,7 @@ errors.Wrap(err, "message")
 * Using `Wrap` is the most explicit way to wrap errors
 * Wrapping with `fmt.Errorf("foo: %w", err)` is implicit, redundant and error-prone
 * Parsing `"foo: %w"` is implicit, redundant and slow
-* The [pkg/errors](https://github.com/pkg/errors) and [xerrrors](https://pkg.go.dev/golang.org/x/xerrors) are not maintainted
+* The [pkg/errors](https://github.com/pkg/errors) and [xerrors](https://pkg.go.dev/golang.org/x/xerrors) are not maintainted
 * The [cockroachdb/errors](https://github.com/cockroachdb/errors) is too big
 * The `errors` has no caller stack trace
 
