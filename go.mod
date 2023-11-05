@@ -1,3 +1,3 @@
 module github.com/go-faster/errors
 
-go 1.18
+go 1.20
