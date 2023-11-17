@@ -95,7 +95,7 @@ func TestErrorFormatter(t *testing.T) {
 		fmt: "%+v",
 		want: "something:" +
 			"\n    github.com/go-faster/errors_test.TestErrorFormatter" +
-			"\n        .+/format_test.go:30" +
+			"\n        .+/format_test.go:32" +
 			"\n    something more",
 		regexp: true,
 	}, {
