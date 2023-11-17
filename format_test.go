@@ -22,16 +22,22 @@ func TestErrorFormatter(t *testing.T) {
 			detailed{},
 		}
 		nonascii = &wrapped{"café", nil}
-		newline  = &wrapped{"msg with\nnewline",
-			&wrapped{"and another\none", nil}}
+		newline  = &wrapped{
+			"msg with\nnewline",
+			&wrapped{"and another\none", nil},
+		}
 		fallback  = &wrapped{"fallback", os.ErrNotExist}
 		oldAndNew = &wrapped{"new style", formatError("old style")}
 		framed    = &withFrameAndMore{
 			frame: errors.Caller(0),
 		}
-		opaque = &wrapped{"outer",
-			errors.Opaque(&wrapped{"mid",
-				&wrapped{"inner", nil}})}
+		opaque = &wrapped{
+			"outer",
+			errors.Opaque(&wrapped{
+				"mid",
+				&wrapped{"inner", nil},
+			}),
+		}
 	)
 	testCases := []struct {
 		err    error
