@@ -209,6 +209,19 @@ func TestUnwrap(t *testing.T) {
 	}
 }
 
+func TestWrapNil(t *testing.T) {
+	// Wrap and Wrapf return a non-nil error even for a nil input, matching
+	// fmt.Errorf with a nil %w operand. See the Wrap doc comment.
+	if err := errors.Wrap(nil, "foo"); err == nil {
+		t.Error("Wrap(nil) = nil, want non-nil")
+	} else if got := errors.Unwrap(err); got != nil {
+		t.Errorf("Unwrap(Wrap(nil)) = %v, want nil", got)
+	}
+	if err := errors.Wrapf(nil, "foo %d", 1); err == nil {
+		t.Error("Wrapf(nil) = nil, want non-nil")
+	}
+}
+
 func TestOpaque(t *testing.T) {
 	got := fmt.Sprintf("%v", errors.Wrap(errors.Opaque(errorT{}), "foo"))
 	want := "foo: errorT"
